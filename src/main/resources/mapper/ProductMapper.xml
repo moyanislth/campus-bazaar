@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bxk.campusbazaar.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.Product">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+    <result column="discount_price" jdbcType="DECIMAL" property="discountPrice" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="is_bargain" jdbcType="BIT" property="isBargain" />
+    <result column="condition" jdbcType="VARCHAR" property="condition" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.Product">
+    insert into product (id, name, category, 
+      original_price, discount_price, stock, 
+      merchant_id, status, is_bargain, 
+      condition, description)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, 
+      #{merchantId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{isBargain,jdbcType=BIT}, 
+      #{condition,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.Product">
+    update product
+    set name = #{name,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      original_price = #{originalPrice,jdbcType=DECIMAL},
+      discount_price = #{discountPrice,jdbcType=DECIMAL},
+      stock = #{stock,jdbcType=INTEGER},
+      merchant_id = #{merchantId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      is_bargain = #{isBargain,jdbcType=BIT},
+      condition = #{condition,jdbcType=VARCHAR},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, category, original_price, discount_price, stock, merchant_id, status, 
+    is_bargain, condition, description
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, category, original_price, discount_price, stock, merchant_id, status, 
+    is_bargain, condition, description
+    from product
+  </select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bxk.campusbazaar.mapper.MerchantLevelMapper">
+  <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.MerchantLevel">
+    <id column="level" jdbcType="TINYINT" property="level" />
+    <result column="fee_rate" jdbcType="DECIMAL" property="feeRate" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Byte">
+    delete from merchant_level
+    where level = #{level,jdbcType=TINYINT}
+  </delete>
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.MerchantLevel">
+    insert into merchant_level (level, fee_rate, description
+      )
+    values (#{level,jdbcType=TINYINT}, #{feeRate,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.MerchantLevel">
+    update merchant_level
+    set fee_rate = #{feeRate,jdbcType=DECIMAL},
+      description = #{description,jdbcType=VARCHAR}
+    where level = #{level,jdbcType=TINYINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Byte" resultMap="BaseResultMap">
+    select level, fee_rate, description
+    from merchant_level
+    where level = #{level,jdbcType=TINYINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select level, fee_rate, description
+    from merchant_level
+  </select>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bxk.campusbazaar.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="role" jdbcType="TINYINT" property="role" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.User">
+    insert into user (id, username, password, 
+      role, status, phone, 
+      email, city, gender, 
+      bank_account, created_at)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{role,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, 
+      #{bankAccount,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      role = #{role,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      bank_account = #{bankAccount,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, username, password, role, status, phone, email, city, gender, bank_account, 
+    created_at
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, password, role, status, phone, email, city, gender, bank_account, 
+    created_at
+    from user
+  </select>
+</mapper>

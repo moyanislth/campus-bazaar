@@ -1,0 +1,13 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: campus-bazaar
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/2022011117
+        username: Myan
+        password: 123456
+
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bxk.campusbazaar.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.Order">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="completed_at" jdbcType="TIMESTAMP" property="completedAt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.Order">
+    insert into order (id, user_id, total_amount, 
+      status, created_at, completed_at
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{totalAmount,jdbcType=DECIMAL}, 
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{completedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.Order">
+    update order
+    set user_id = #{userId,jdbcType=BIGINT},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      completed_at = #{completedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, user_id, total_amount, status, created_at, completed_at
+    from order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, total_amount, status, created_at, completed_at
+    from order
+  </select>
+</mapper>
