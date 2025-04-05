@@ -1,8 +1,11 @@
 package com.bxk.campusbazaar.mapper;
 
 import com.bxk.campusbazaar.pojo.User;
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
+@Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -13,4 +16,8 @@ public interface UserMapper {
     List<User> selectAll();
 
     int updateByPrimaryKey(User record);
+
+    void deleteAll();
+
+    User selectByUsername(String username);
 }

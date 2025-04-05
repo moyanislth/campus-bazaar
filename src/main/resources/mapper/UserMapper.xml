@@ -14,6 +14,10 @@
     <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
   </resultMap>
+
+  <delete id="deleteAll" parameterType="java.lang.Long">
+    CALL truncate_user_table();
+  </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user
     where id = #{id,jdbcType=BIGINT}
@@ -52,5 +56,8 @@
     select id, username, password, role, status, phone, email, city, gender, bank_account, 
     created_at
     from user
+  </select>
+  <select id="selectByUsername" resultType="com.bxk.campusbazaar.pojo.User">
+    select id, username, password from user where username = #{username}
   </select>
 </mapper>

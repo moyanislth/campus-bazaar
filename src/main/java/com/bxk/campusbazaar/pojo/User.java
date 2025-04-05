@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Setter
 @Getter
+@Setter
 public class User {
     private Long id;
 
@@ -16,9 +16,9 @@ public class User {
 
     private Byte role;
 
-    private Byte status;
-
     private String phone;
+
+    private Byte status;
 
     private String email;
 
