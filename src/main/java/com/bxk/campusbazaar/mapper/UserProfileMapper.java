@@ -7,8 +7,6 @@ public interface UserProfileMapper {
 
     int insert(UserProfile userProfile);
 
-    int updateByPrimaryKey(long id);
-
     int deleteByPrimaryKey(long id);
 
     UserProfile selectByPrimaryKey(long id);

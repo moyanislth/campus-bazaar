@@ -74,10 +74,6 @@ public class VerifyController {
         // 将session中的取出对应session id生成的验证码
         String serverCode = (String) session.getAttribute("SESSION_VERIFY_CODE_" + id);
         // 校验验证码
-        if (null == serverCode || !serverCode.equalsIgnoreCase(code)) {
-            return false;
-        }
-
-        return true;
+        return null != serverCode && serverCode.equalsIgnoreCase(code);
     }
 }

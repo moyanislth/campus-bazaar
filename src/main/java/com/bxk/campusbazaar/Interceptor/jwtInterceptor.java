@@ -8,7 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Log4j2
 public class jwtInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         return true;
     }

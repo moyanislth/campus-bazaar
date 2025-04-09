@@ -1,8 +1,6 @@
 package com.bxk.campusbazaar.mapper;
 
 import com.bxk.campusbazaar.pojo.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
