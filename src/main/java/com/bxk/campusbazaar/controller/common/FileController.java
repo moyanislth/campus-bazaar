@@ -56,7 +56,10 @@ public class FileController {
         File savePathFile = new File(savePath);
         if (!savePathFile.exists()) {
             //若不存在该目录，则创建目录
-            savePathFile.mkdir();
+            boolean saved = savePathFile.mkdir();
+             if (!saved) {
+                 return Response.fail("文件上传失败");
+             }
         }
         //通过UUID生成唯一文件名
         String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
