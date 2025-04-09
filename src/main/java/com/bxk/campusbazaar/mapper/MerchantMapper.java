@@ -1,8 +1,11 @@
 package com.bxk.campusbazaar.mapper;
 
 import com.bxk.campusbazaar.pojo.Merchant;
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
+@Mapper
 public interface MerchantMapper {
     int deleteByPrimaryKey(Long userId);
 

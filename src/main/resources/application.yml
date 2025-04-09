@@ -1,13 +1,29 @@
 server:
     port: 8080
 
+prop:
+    upload-folder: D:\Photos\CB
+
 spring:
     application:
         name: campus-bazaar
+    # 配置SpringMVC文件上传限制，默认1M。注意MB要大写，不然报错。SpringBoot版本不同，配置项不同
+    servlet:
+      multipart:
+          enabled: true
+          max-file-size: 20MB
+          max-request-size: 20MB
+          location: D:\Photos\CB
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/2022011117
+        url: jdbc:mysql://localhost:3306/2022011117?useUnicode=true&characterEncoding=UTF-8
         username: Myan
         password: 123456
 
+mybatis-plus:
+    configuration:
+        map-underscore-to-camel-case: true
+    type-aliases-package: com.bxk.campusbazaar.pojo
+    mapper-locations: classpath:mapper/*.xml
 
+#debug: true

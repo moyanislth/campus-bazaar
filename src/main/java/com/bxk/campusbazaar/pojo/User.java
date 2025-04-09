@@ -3,6 +3,7 @@ package com.bxk.campusbazaar.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Getter
@@ -28,6 +29,22 @@ public class User {
 
     private String bankAccount;
 
-    private Date createdAt;
+    private Instant createdAt;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", phone='" + phone + '\'' +
+                ", status=" + status +
+                ", email='" + email + '\'' +
+                ", city='" + city + '\'' +
+                ", gender=" + gender +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

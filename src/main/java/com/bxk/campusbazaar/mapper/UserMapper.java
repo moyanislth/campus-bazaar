@@ -2,10 +2,10 @@ package com.bxk.campusbazaar.mapper;
 
 import com.bxk.campusbazaar.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 
 import java.util.List;
 
-@Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -20,4 +20,8 @@ public interface UserMapper {
     void deleteAll();
 
     User selectByUsername(String username);
+
+    User selectByPhone(String phone);
+
+    void updatePassword(Long id, String password);
 }

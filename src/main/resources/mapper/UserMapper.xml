@@ -14,15 +14,18 @@
     <result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
   </resultMap>
-
+<!--调试-->
   <delete id="deleteAll" parameterType="java.lang.Long">
     CALL truncate_user_table();
   </delete>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.User">
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, password, role, status, phone, email, city, gender, bank_account,
+           created_at
+    from user
+  </select>
+
+<!--业务-->
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.User" useGeneratedKeys="true" keyProperty="id">
     insert into user (id, username, password, 
       role, status, phone, 
       email, city, gender, 
@@ -46,18 +49,30 @@
       created_at = #{createdAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <update id="updatePassword">
+    update user
+    set password = #{password,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select id, username, password, role, status, phone, email, city, gender, bank_account, 
     created_at
     from user
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, password, role, status, phone, email, city, gender, bank_account, 
-    created_at
-    from user
-  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <select id="selectByUsername" resultType="com.bxk.campusbazaar.pojo.User">
-    select id, username, password from user where username = #{username}
+    select id, username, password, role, status, phone, email, city, gender, bank_account,
+           created_at
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPhone" resultType="com.bxk.campusbazaar.pojo.User">
+    select id, username, password, role, status, phone, email, city, gender, bank_account, user.created_at
+    from user
+    where phone = #{phone,jdbcType=VARCHAR}
   </select>
 </mapper>

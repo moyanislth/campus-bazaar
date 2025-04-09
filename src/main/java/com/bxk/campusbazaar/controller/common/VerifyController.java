@@ -1,4 +1,4 @@
-package com.bxk.campusbazaar.controller;
+package com.bxk.campusbazaar.controller.common;
 
 
 import com.bxk.campusbazaar.tools.VerifyUtil;
