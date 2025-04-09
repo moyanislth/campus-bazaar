@@ -64,7 +64,7 @@
     delete from user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <select id="selectByUsername" resultType="com.bxk.campusbazaar.pojo.User">
+  <select id="selectByUsername"  parameterType="string" resultMap="BaseResultMap">
     select id, username, password, role, status, phone, email, city, gender, bank_account,
            created_at
     from user
