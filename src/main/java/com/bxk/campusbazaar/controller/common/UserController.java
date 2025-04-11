@@ -118,7 +118,7 @@ public class UserController {
     @PostMapping(value = "/login")
     public Response<Object> login(@RequestParam String username, @RequestParam String password){
         username = username.trim();
-        log.error(username);
+
         User user = userService.getUserByUsername(username);
 
         if(user == null){

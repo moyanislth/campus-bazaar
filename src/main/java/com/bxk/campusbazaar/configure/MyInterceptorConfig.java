@@ -17,6 +17,7 @@ public class MyInterceptorConfig extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new jwtInterceptor())
                 .addPathPatterns("/**")
+                // 拦截除去登陆注册,展示各类商品,静态资源外所有接口
                 .excludePathPatterns("/api/v1/login")
                 .excludePathPatterns("/api/v1/register")
                 .excludePathPatterns("/api/product/getAllProducts")

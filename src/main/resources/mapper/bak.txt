@@ -1,0 +1,17 @@
+<select id="selectProductByLike" resultMap="BaseResultMap">
+    SELECT *
+    FROM product
+    WHERE status = 1
+    AND name LIKE CONCAT('%', #{name}, '%')
+    ORDER BY
+    <choose>
+      <!-- 直接使用字段名白名单校验 -->
+      <when test="standard == 'name'">name</when>
+      <when test="standard == 'price'">original_price</when>
+      <when test="standard == 'nob'">nob</when>
+      <otherwise>name</otherwise> <!-- 默认值保障安全 -->
+    </choose>
+    <!-- 直接使用布尔值判断 -->
+    <if test="ascending">ASC</if>
+    <if test="!ascending">DESC</if>
+</select>

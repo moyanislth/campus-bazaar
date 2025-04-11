@@ -30,4 +30,23 @@ public class Product {
 
     private String description;
 
+    private int nob;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", originalPrice=" + originalPrice +
+                ", discountPrice=" + discountPrice +
+                ", stock=" + stock +
+                ", merchantId=" + merchantId +
+                ", status=" + status +
+                ", isBargain=" + isBargain +
+                ", condition='" + condition + '\'' +
+                ", description='" + description + '\'' +
+                ", nob=" + nob +
+                '}';
+    }
 }

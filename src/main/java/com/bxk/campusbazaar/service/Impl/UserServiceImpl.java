@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        log.error(username);
         return userMapper.selectByUsername(username);
     }
 

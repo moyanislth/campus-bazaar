@@ -12,5 +12,11 @@ public interface ProductMapper {
 
     List<Product> selectAll();
 
-    int updateByPrimaryKey(Product record);
+    void updateNobByPrimaryKey(Long id , int nob);
+
+    List<Product> selectProductByLike(String name, String standard, boolean ascending);
+
+    void updateProductStatusByPrimaryKey(int id, int status);
+
+    void updateProductStatus();
 }

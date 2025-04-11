@@ -18,39 +18,61 @@
     delete from product
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.Product">
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.Product"  useGeneratedKeys="true" keyProperty="id">
     insert into product (id, name, category, 
       original_price, discount_price, stock, 
-      merchant_id, status, is_bargain, 
-      condition, description)
+      merchant_id, is_bargain,
+      `condition`, description)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
       #{originalPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, 
-      #{merchantId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{isBargain,jdbcType=BIT}, 
+      #{merchantId,jdbcType=BIGINT}, #{isBargain,jdbcType=BIT},
       #{condition,jdbcType=VARCHAR}, #{description,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.Product">
+
+  <!--购买人数++-->
+  <update id="updateNobByPrimaryKey">
     update product
-    set name = #{name,jdbcType=VARCHAR},
-      category = #{category,jdbcType=VARCHAR},
-      original_price = #{originalPrice,jdbcType=DECIMAL},
-      discount_price = #{discountPrice,jdbcType=DECIMAL},
-      stock = #{stock,jdbcType=INTEGER},
-      merchant_id = #{merchantId,jdbcType=BIGINT},
-      status = #{status,jdbcType=TINYINT},
-      is_bargain = #{isBargain,jdbcType=BIT},
-      condition = #{condition,jdbcType=VARCHAR},
-      description = #{description,jdbcType=LONGVARCHAR}
+    set nob = #{nob,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateProductStatusByPrimaryKey">
+    update product
+    set status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateProductStatus">
+    update product
+    set status = 1
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select id, name, category, original_price, discount_price, stock, merchant_id, status, 
-    is_bargain, condition, description
+    is_bargain, `condition`, description, nob
     from product
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, name, category, original_price, discount_price, stock, merchant_id, status, 
-    is_bargain, condition, description
+    is_bargain, `condition`, description, nob
     from product
+  </select>
+
+  <select id="selectProductByLike" resultMap="BaseResultMap">
+    SELECT *
+    FROM product
+    WHERE status = 1
+    <if test="name != null and name != ''">
+      AND name LIKE CONCAT('%', #{name}, '%')
+    </if>
+    ORDER BY
+    <choose>
+      <!-- 直接使用字段名白名单校验 -->
+      <when test="standard == 'name'">name</when>
+      <when test="standard == 'price'">original_price</when>
+      <when test="standard == 'nob'">nob</when>
+      <otherwise>name</otherwise> <!-- 默认值保障安全 -->
+    </choose>
+    <!-- 直接使用布尔值判断 -->
+    <if test="ascending">ASC</if>
+    <if test="!ascending">DESC</if>
   </select>
 </mapper>
