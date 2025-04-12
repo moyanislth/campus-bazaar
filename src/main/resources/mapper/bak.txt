@@ -1,8 +1,9 @@
-<select id="selectProductByLike" resultMap="BaseResultMap">
-    SELECT *
+SELECT *
     FROM product
     WHERE status = 1
-    AND name LIKE CONCAT('%', #{name}, '%')
+    <if test="name != null and name != ''">
+      AND name LIKE CONCAT('%', #{name}, '%')
+    </if>
     ORDER BY
     <choose>
       <!-- 直接使用字段名白名单校验 -->
@@ -14,4 +15,3 @@
     <!-- 直接使用布尔值判断 -->
     <if test="ascending">ASC</if>
     <if test="!ascending">DESC</if>
-</select>

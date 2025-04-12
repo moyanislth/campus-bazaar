@@ -13,6 +13,7 @@
     <result column="is_bargain" jdbcType="BIT" property="isBargain" />
     <result column="condition" jdbcType="VARCHAR" property="condition" />
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="nob" jdbcType="INTEGER" property="nob" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from product
@@ -51,8 +52,7 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, category, original_price, discount_price, stock, merchant_id, status, 
-    is_bargain, `condition`, description, nob
+    select *
     from product
   </select>
 
@@ -61,7 +61,7 @@
     FROM product
     WHERE status = 1
     <if test="name != null and name != ''">
-      AND name LIKE CONCAT('%', #{name}, '%')
+      AND name LIKE CONCAT('%', ${name}, '%')
     </if>
     ORDER BY
     <choose>

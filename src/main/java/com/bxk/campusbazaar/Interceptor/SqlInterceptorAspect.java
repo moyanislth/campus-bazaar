@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-@Aspect
+//@Aspect
 @Component
 public class SqlInterceptorAspect {
 

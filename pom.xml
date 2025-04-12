@@ -65,6 +65,13 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
+        <!-- Log4j2 与 SLF4J 桥接（MyBatis-Plus 使用 SLF4J） -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+
         <!--MySQL驱动-->
         <dependency>
             <groupId>mysql</groupId>
