@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bxk.campusbazaar.mapper.UserCouponMapper">
+  <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.UserCoupon">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="coupon_id" jdbcType="BIGINT" property="couponId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="used_time" jdbcType="TIMESTAMP" property="usedTime" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_coupon
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.UserCoupon">
+    insert into user_coupon (id, user_id, coupon_id, 
+      status, used_time, order_id, 
+      created_at)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{couponId,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{usedTime,jdbcType=TIMESTAMP}, #{orderId,jdbcType=VARCHAR}, 
+      #{createdAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.UserCoupon">
+    update user_coupon
+    set user_id = #{userId,jdbcType=BIGINT},
+      coupon_id = #{couponId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      used_time = #{usedTime,jdbcType=TIMESTAMP},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_id, coupon_id, status, used_time, order_id, created_at
+    from user_coupon
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, coupon_id, status, used_time, order_id, created_at
+    from user_coupon
+  </select>
+</mapper>

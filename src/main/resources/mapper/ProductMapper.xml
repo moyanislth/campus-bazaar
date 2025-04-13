@@ -15,6 +15,11 @@
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
     <result column="nob" jdbcType="INTEGER" property="nob" />
   </resultMap>
+
+  <!--测试语句-->
+  <select id="test" resultType="java.lang.String">
+    SELECT CONCAT('%', #{name}, '%');
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from product
     where id = #{id,jdbcType=BIGINT}
@@ -61,7 +66,7 @@
     FROM product
     WHERE status = 1
     <if test="name != null and name != ''">
-      AND name LIKE CONCAT('%', ${name}, '%')
+      AND name LIKE CONCAT('%', #{name}, '%')
     </if>
     ORDER BY
     <choose>

@@ -55,4 +55,9 @@ public class ProduceServiceImpl implements ProduceService {
         productMapper.updateProductStatus();
     }
 
+    @Override
+    public Object test(String name) {
+        return productMapper.test(name);
+    }
+
 }

@@ -16,7 +16,7 @@ spring:
           location: D:\Photos\CB
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/2022011117?useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/2022011117?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
         username: Myan
         password: 123456
 
@@ -27,5 +27,7 @@ mybatis-plus:
         log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
     type-aliases-package: com.bxk.campusbazaar.pojo
     mapper-locations: classpath:mapper/*.xml
+logging:
+    level:
+        com.bxk.campusbazaar: debug
 
-#debug: true

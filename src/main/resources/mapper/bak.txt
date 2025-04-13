@@ -1,17 +1,22 @@
-SELECT *
-    FROM product
-    WHERE status = 1
-    <if test="name != null and name != ''">
-      AND name LIKE CONCAT('%', #{name}, '%')
-    </if>
-    ORDER BY
-    <choose>
-      <!-- 直接使用字段名白名单校验 -->
-      <when test="standard == 'name'">name</when>
-      <when test="standard == 'price'">original_price</when>
-      <when test="standard == 'nob'">nob</when>
-      <otherwise>name</otherwise> <!-- 默认值保障安全 -->
-    </choose>
-    <!-- 直接使用布尔值判断 -->
-    <if test="ascending">ASC</if>
-    <if test="!ascending">DESC</if>
+package com.bxk.campusbazaar.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.datetime.DateFormatterRegistrar;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.time.format.DateTimeFormatter;
+
+@Configuration
+public class DateTimeConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        // 支持 java.util.Date 类型
+        DateFormatterRegistrar dateRegistrar = new DateFormatterRegistrar();
+        dateRegistrar.setFormatter(new DateFormatter("yyyy-MM-dd HH:mm:ss")); // 支持你的格式
+        dateRegistrar.registerFormatters(registry);
+    }
+}

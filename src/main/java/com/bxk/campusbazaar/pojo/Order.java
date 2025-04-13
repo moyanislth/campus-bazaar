@@ -1,13 +1,13 @@
 package com.bxk.campusbazaar.pojo;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
+@Setter
+@Getter
 public class Order {
     private String id;
 
@@ -20,5 +20,9 @@ public class Order {
     private Date createdAt;
 
     private Date completedAt;
+
+    private Long couponId;
+
+    private BigDecimal discountAmount;
 
 }

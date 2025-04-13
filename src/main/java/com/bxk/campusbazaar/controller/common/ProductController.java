@@ -25,6 +25,12 @@ public class ProductController {
         this.produceService = produceService;
     }
 
+    @GetMapping("/test")
+    public Response<Object> getDatabase(@RequestParam String name){
+        String result = (String) produceService.test(name);
+        System.out.println(result);
+        return Response.success(result);
+    }
 
     @GetMapping("/getAllProducts")
     public Response<Object> getAllProducts(){
@@ -60,6 +66,9 @@ public class ProductController {
         }
 
         List<Product> products = produceService.getProductByLike(name,standard,ascending);
+
+        //TODO 查询有错误、始终返回空值，但是数据库内数据返回正常
+
         return Response.success(products);
     }
 

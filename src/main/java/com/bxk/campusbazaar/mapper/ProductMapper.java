@@ -19,4 +19,6 @@ public interface ProductMapper {
     void updateProductStatusByPrimaryKey(int id, int status);
 
     void updateProductStatus();
+
+    Object test(String name);
 }

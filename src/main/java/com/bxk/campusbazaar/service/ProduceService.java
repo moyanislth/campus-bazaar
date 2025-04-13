@@ -17,4 +17,5 @@ public interface ProduceService {
 
     void updateProductStatus(int id, int status);
     void updateProductStatus();
+    Object test(String name);
 }

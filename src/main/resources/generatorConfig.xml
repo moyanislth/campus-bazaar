@@ -32,14 +32,8 @@
     <javaClientGenerator type="XMLMAPPER" targetPackage="com.bxk.campusbazaar.mapper" targetProject="src/main/java"/>
 
     <!-- 指定要生成的表 -->
-    <table tableName="merchant" domainObjectName="Merchant"/>
-    <table tableName="merchant_level" domainObjectName="MerchantLevel"/>
+    <table tableName="coupon" domainObjectName="Coupon"/>
+    <table tableName="user_coupon" domainObjectName="UserCoupon"/>
     <table tableName="order" domainObjectName="Order"/>
-    <table tableName="order_item" domainObjectName="OrderItem"/>
-    <table tableName="product" domainObjectName="Product"/>
-    <table tableName="product_comment" domainObjectName="ProductComment"/>
-    <table tableName="product_image" domainObjectName="ProductImage"/>
-    <table tableName="user" domainObjectName="User"/>
-    <table tableName="wallet" domainObjectName="Wallet"/>
 </context>
 </generatorConfiguration>

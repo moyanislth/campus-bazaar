@@ -103,12 +103,12 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
-        <!--mybatis自动代码生成-->
-        <dependency>
-            <groupId>org.mybatis.generator</groupId>
-            <artifactId>mybatis-generator-core</artifactId>
-            <version>1.4.0</version>
-        </dependency>
+<!--        &lt;!&ndash;mybatis自动代码生成&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.mybatis.generator</groupId>-->
+<!--            <artifactId>mybatis-generator-core</artifactId>-->
+<!--            <version>1.4.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

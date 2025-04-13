@@ -1,4 +1,4 @@
-package com.bxk.campusbazaar.configure;
+package com.bxk.campusbazaar.config;
 
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.bxk.campusbazaar.handler.JsonTypeHandler;

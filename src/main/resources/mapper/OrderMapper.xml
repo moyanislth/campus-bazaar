@@ -8,35 +8,39 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="completed_at" jdbcType="TIMESTAMP" property="completedAt" />
+    <result column="coupon_id" jdbcType="BIGINT" property="couponId" />
+    <result column="discount_amount" jdbcType="DECIMAL" property="discountAmount" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from order
+    delete from `order`
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.Order">
-    insert into order (id, user_id, total_amount, 
-      status, created_at, completed_at
-      )
+    insert into `order` (id, user_id, total_amount,
+      status, created_at, completed_at, 
+      coupon_id, discount_amount)
     values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{totalAmount,jdbcType=DECIMAL}, 
-      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{completedAt,jdbcType=TIMESTAMP}
-      )
+      #{status,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{completedAt,jdbcType=TIMESTAMP}, 
+      #{couponId,jdbcType=BIGINT}, #{discountAmount,jdbcType=DECIMAL})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.Order">
-    update order
+    update `order`
     set user_id = #{userId,jdbcType=BIGINT},
       total_amount = #{totalAmount,jdbcType=DECIMAL},
       status = #{status,jdbcType=TINYINT},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
-      completed_at = #{completedAt,jdbcType=TIMESTAMP}
+      completed_at = #{completedAt,jdbcType=TIMESTAMP},
+      coupon_id = #{couponId,jdbcType=BIGINT},
+      discount_amount = #{discountAmount,jdbcType=DECIMAL}
     where id = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id, user_id, total_amount, status, created_at, completed_at
-    from order
+    select id, user_id, total_amount, status, created_at, completed_at, coupon_id, discount_amount
+    from `order`
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, user_id, total_amount, status, created_at, completed_at
-    from order
+    select id, user_id, total_amount, status, created_at, completed_at, coupon_id, discount_amount
+    from `order`
   </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.bxk.campusbazaar.configure;
+package com.bxk.campusbazaar.config;
 
 import com.bxk.campusbazaar.Interceptor.jwtInterceptor;
 import org.springframework.beans.factory.annotation.Value;
