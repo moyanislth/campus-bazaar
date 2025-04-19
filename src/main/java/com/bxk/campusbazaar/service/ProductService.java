@@ -4,7 +4,7 @@ import com.bxk.campusbazaar.pojo.Product;
 
 import java.util.List;
 
-public interface ProduceService {
+public interface ProductService {
     void addProduct(Product product);
 
     List<Product> getAllProducts();

@@ -2,19 +2,21 @@ package com.bxk.campusbazaar.service.Impl;
 
 import com.bxk.campusbazaar.mapper.ProductMapper;
 import com.bxk.campusbazaar.pojo.Product;
-import com.bxk.campusbazaar.service.ProduceService;
+import com.bxk.campusbazaar.service.ProductService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Log4j2
 @Service
-public class ProduceServiceImpl implements ProduceService {
+public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
 
     @Autowired
-    ProduceServiceImpl(ProductMapper productMapper) {
+    ProductServiceImpl(ProductMapper productMapper) {
         this.productMapper = productMapper;
     }
 
@@ -42,7 +44,11 @@ public class ProduceServiceImpl implements ProduceService {
 
     @Override
     public List<Product> getProductByLike(String name, String standard, boolean ascending) {
-        return productMapper.selectProductByLike(name,standard,ascending);
+        // 校验排序字段合法性（防止SQL注入）
+        if (!List.of("name", "price", "nob").contains(standard)) {
+            standard = "name"; // 默认排序字段
+        }
+        return productMapper.selectByLikeName(name, standard, ascending);
     }
 
     @Override
@@ -59,5 +65,4 @@ public class ProduceServiceImpl implements ProduceService {
     public Object test(String name) {
         return productMapper.test(name);
     }
-
 }

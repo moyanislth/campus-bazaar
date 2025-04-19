@@ -1,7 +1,7 @@
 package com.bxk.campusbazaar.controller.common;
 
 import com.bxk.campusbazaar.pojo.Product;
-import com.bxk.campusbazaar.service.ProduceService;
+import com.bxk.campusbazaar.service.ProductService;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,16 @@ import java.util.List;
 public class ProductController {
 
 
-    private final ProduceService produceService;
+    private final ProductService productService;
 
     @Autowired
-    ProductController(ProduceService produceService){
-        this.produceService = produceService;
+    ProductController(ProductService productService){
+        this.productService = productService;
     }
 
     @GetMapping("/test")
     public Response<Object> getDatabase(@RequestParam String name){
-        String result = (String) produceService.test(name);
+        String result = (String) productService.test(name);
         System.out.println(result);
         return Response.success(result);
     }
@@ -35,7 +35,7 @@ public class ProductController {
     @GetMapping("/getAllProducts")
     public Response<Object> getAllProducts(){
 
-        List<Product> products = produceService.getAllProducts();
+        List<Product> products = productService.getAllProducts();
 
         return Response.success(products);
     }
@@ -45,7 +45,7 @@ public class ProductController {
      */
     @GetMapping("/getProductById")
     public Response<Object> getProductById(@RequestParam("id") int id){
-        Product product = produceService.getProductById(id);
+        Product product = productService.getProductById(id);
         return Response.success(product);
     }
 
@@ -57,19 +57,11 @@ public class ProductController {
      * @return 商品列表
      */
     @GetMapping("/getProductByLike")
-    public Response<Object> getProductByLike(@RequestParam("name") String name,
-                                             @RequestParam("standard") String standard,
-                                             @RequestParam("ascending") boolean ascending){
-        // 如果传参不对，赋值默认值
-        if(!Arrays.asList("name", "price", "nob").contains(standard.toLowerCase())) {
-            standard = "name"; // 自动重置为默认值
-        }
-
-        List<Product> products = produceService.getProductByLike(name,standard,ascending);
-
-        //TODO 查询有错误、始终返回空值，但是数据库内数据返回正常
-
-        return Response.success(products);
+    public List<Product> searchProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(defaultValue = "name") String standard,
+            @RequestParam(defaultValue = "true") boolean ascending) {
+        return productService.getProductByLike(name, standard, ascending);
     }
 
     /**
@@ -78,7 +70,7 @@ public class ProductController {
     @PatchMapping("/updateProductNob")
     public Response<Object> updateProductNob(@RequestParam int id){
         try {
-            produceService.updateProductNob(id);
+            productService.updateProductNob(id);
         }catch (Exception e){
             return Response.fail();
         }
@@ -91,7 +83,7 @@ public class ProductController {
             return Response.fail("商品状态只能为0,1或2");
         }
         try {
-            produceService.updateProductStatus(id,status);
+            productService.updateProductStatus(id,status);
         }catch (Exception e){
             return Response.fail();
         }
@@ -100,7 +92,7 @@ public class ProductController {
     @PatchMapping("updateAllProductStatus")
     public Response<Object> updateProductStatus(){
         try {
-            produceService.updateProductStatus();
+            productService.updateProductStatus();
         }catch (Exception e){
             return Response.fail();
         }
@@ -117,7 +109,7 @@ public class ProductController {
         log.info(product.toString());
 
         try {
-            produceService.addProduct(product);
+            productService.addProduct(product);
         }catch (Exception e){
             return Response.fail(e.getCause().getMessage());
         }

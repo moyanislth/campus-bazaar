@@ -1,22 +1,8 @@
-package com.bxk.campusbazaar.config;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.format.FormatterRegistry;
-import org.springframework.format.datetime.DateFormatter;
-import org.springframework.format.datetime.DateFormatterRegistrar;
-import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.time.format.DateTimeFormatter;
-
-@Configuration
-public class DateTimeConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        // 支持 java.util.Date 类型
-        DateFormatterRegistrar dateRegistrar = new DateFormatterRegistrar();
-        dateRegistrar.setFormatter(new DateFormatter("yyyy-MM-dd HH:mm:ss")); // 支持你的格式
-        dateRegistrar.registerFormatters(registry);
-    }
-}
+<select id="selectByLikeName" resultMap="BaseResultMap">
+    SELECT * FROM product
+    WHERE status = 1
+    <if test = 'name != null' >
+        AND name LIKE #{name}
+    </if>
+    ORDER BY ${standard} ${ascending ? 'ASC' : 'DESC'}
+  </select>

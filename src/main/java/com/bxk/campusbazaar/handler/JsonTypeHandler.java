@@ -25,15 +25,17 @@ public class JsonTypeHandler extends BaseTypeHandler<Object> {
      */
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Object parameter, JdbcType jdbcType) throws SQLException {
-        if (parameter != null) {
+        if (parameter instanceof String) {
+            // 如果是String类型，直接传递不转JSON
+            ps.setString(i, (String) parameter);
+        } else {
+            // 其他对象类型才转为JSON
             try {
-                String json = objectMapper.writeValueAsString(parameter);  // 将对象转换为 JSON 字符串
+                String json = objectMapper.writeValueAsString(parameter);
                 ps.setString(i, json);
             } catch (JsonProcessingException e) {
                 throw new SQLException("Error converting object to JSON", e);
             }
-        } else {
-            ps.setNull(i, jdbcType.TYPE_CODE);
         }
     }
 

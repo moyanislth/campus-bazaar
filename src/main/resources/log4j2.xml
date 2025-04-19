@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <!-- 基础日志格式 -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+
+        <!-- 彩色日志格式（兼容Windows/IDEA/Linux） -->
+        <Property name="COLOR_PATTERN">%style{%d{yyyy-MM-dd HH:mm:ss.SSS}}{dim} %highlight{[%t] %-5level}{FATAL=red blink, ERROR=red, WARN=yellow, DEBUG=blue} %logger{36} - %msg%n</Property>
+    </Properties>
+
     <Appenders>
-        <!-- 控制台输出 -->
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+        <!-- 控制台输出（强制启用ANSI颜色） -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <!-- 关键点：使用Jansi库解决Windows颜色问题 -->
+            <PatternLayout pattern="${COLOR_PATTERN}" charset="UTF-8" disableAnsi="false"/>
         </Console>
-        <!-- 可选：文件输出 -->
-        <File name="File" fileName="logs/mybatis-plus.log">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
-        </File>
+
+        <!-- 文件输出（无颜色） -->
+        <RollingFile name="FILE" fileName="logs/app.log" filePattern="logs/app-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
-        <!-- MyBatis-Plus 日志 -->
-        <Logger name="com.baomidou.mybatisplus" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
-            <!-- <AppenderRef ref="File"/> -->
+        <!-- MyBatis SQL日志（彩色高亮） -->
+        <Logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
         </Logger>
-        <!-- 可选：你的 Mapper 包 -->
-        <Logger name="com.bxk.campusbazaar.mapper" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
-            <!-- <AppenderRef ref="File"/>-->
+
+        <!-- 自定义包日志 -->
+        <Logger name="com.bxk.campusbazaar" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
         </Logger>
-        <!-- 根日志 -->
-        <Root level="info">
-            <AppenderRef ref="Console"/>
-            <!-- <AppenderRef ref="File"/> -->
+
+        <!-- 唯一Root Logger -->
+        <Root level="INFO">
+            <AppenderRef ref="CONSOLE"/>
+            <!-- <AppenderRef ref="FILE"/> -->
         </Root>
     </Loggers>
 </Configuration>

@@ -1,6 +1,7 @@
 package com.bxk.campusbazaar.mapper;
 
 import com.bxk.campusbazaar.pojo.Product;
+
 import java.util.List;
 
 public interface ProductMapper {
@@ -14,11 +15,11 @@ public interface ProductMapper {
 
     void updateNobByPrimaryKey(Long id , int nob);
 
-    List<Product> selectProductByLike(String name, String standard, boolean ascending);
-
     void updateProductStatusByPrimaryKey(int id, int status);
 
     void updateProductStatus();
 
     Object test(String name);
+
+    List<Product> selectByLikeName(String name, String standard, boolean ascending);
 }
