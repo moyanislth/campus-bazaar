@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bxk.campusbazaar.mapper.CouponMapper">
+<mapper namespace="com.bxk.campusbazaar.api.mapper.CouponMapper">
   <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.Coupon">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -45,5 +45,11 @@
     select id, name, type, value, min_amount, start_time, end_time, total_count, remaining_count,
     created_by, created_at
     from coupon
+  </select>
+  <select id="selectCouponById" resultType="com.bxk.campusbazaar.pojo.Coupon">
+    select id, name, type, value, min_amount, start_time, end_time, total_count, remaining_count,
+    created_by, created_at
+    from coupon
+    where id = #{id,jdbcType=BIGINT}
   </select>
 </mapper>

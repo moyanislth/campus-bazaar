@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bxk.campusbazaar.mapper.UserProfileMapper">
+<mapper namespace="com.bxk.campusbazaar.api.mapper.UserProfileMapper">
     <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.UserProfile">
         <id column="user_id" jdbcType="BIGINT" property="userId" />
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />

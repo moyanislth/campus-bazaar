@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bxk.campusbazaar.mapper.MerchantMapper">
+<mapper namespace="com.bxk.campusbazaar.api.mapper.MerchantMapper">
   <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.Merchant">
     <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="license_img" jdbcType="VARCHAR" property="licenseImg" />
@@ -14,10 +14,10 @@
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.Merchant">
-    insert into merchant (user_id, license_img, id_card_img, 
+    insert into merchant (user_id, license_img, id_card_img,
       level, total_sales, wallet_balance
       )
-    values (#{userId,jdbcType=BIGINT}, #{licenseImg,jdbcType=VARCHAR}, #{idCardImg,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=BIGINT}, #{licenseImg,jdbcType=VARCHAR}, #{idCardImg,jdbcType=VARCHAR},
       #{level,jdbcType=TINYINT}, #{totalSales,jdbcType=INTEGER}, #{walletBalance,jdbcType=DECIMAL}
       )
   </insert>

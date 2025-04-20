@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bxk.campusbazaar.mapper.OrderItemMapper">
+<mapper namespace="com.bxk.campusbazaar.api.mapper.OrderItemMapper">
   <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.OrderItem">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
@@ -13,9 +13,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.OrderItem">
-    insert into order_item (id, order_id, product_id, 
+    insert into order_item (id, order_id, product_id,
       quantity, price)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT},
       #{quantity,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.OrderItem">

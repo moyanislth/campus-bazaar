@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bxk.campusbazaar.mapper.ProductImageMapper">
+<mapper namespace="com.bxk.campusbazaar.api.mapper.ProductImageMapper">
   <resultMap id="BaseResultMap" type="com.bxk.campusbazaar.pojo.ProductImage">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_id" jdbcType="BIGINT" property="productId" />
@@ -12,9 +12,9 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.ProductImage">
-    insert into product_image (id, product_id, image_url, 
+    insert into product_image (id, product_id, image_url,
       is_main)
-    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{imageUrl,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{imageUrl,jdbcType=VARCHAR},
       #{isMain,jdbcType=BIT})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.ProductImage">
