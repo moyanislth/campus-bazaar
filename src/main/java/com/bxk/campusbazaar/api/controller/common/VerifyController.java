@@ -1,6 +1,7 @@
 package com.bxk.campusbazaar.api.controller.common;
 
 
+import com.bxk.campusbazaar.tools.Response;
 import com.bxk.campusbazaar.tools.VerifyUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,10 +39,10 @@ public class VerifyController {
         // 利用图片工具生成图片
         // 返回的数组第一个参数是生成的验证码，第二个参数是生成的图片
         Object[] objs = VerifyUtil.newBuilder()
-                .setWidth(120)   //设置图片的宽度
+                .setWidth(114)   //设置图片的宽度
                 .setHeight(35)   //设置图片的高度
-                .setSize(4)      //设置字符的个数
-                .setLines(10)    //设置干扰线的条数
+                .setSize(6)      //设置字符的个数
+                .setLines(4)    //设置干扰线的条数
                 .setFontSize(25) //设置字体的大小
                 .setTilt(false)   //设置是否需要倾斜
                 .setBackgroundColor(Color.LIGHT_GRAY) //设置验证码的背景颜色
@@ -58,6 +59,7 @@ public class VerifyController {
         response.setContentType("image/png");
         OutputStream os = response.getOutputStream();
         ImageIO.write(image, "png", os);
+
     }
 
     /**

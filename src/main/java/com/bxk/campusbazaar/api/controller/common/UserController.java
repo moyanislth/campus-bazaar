@@ -1,5 +1,6 @@
 package com.bxk.campusbazaar.api.controller.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bxk.campusbazaar.api.service.UserService;
 import com.bxk.campusbazaar.pojo.User;
 import com.bxk.campusbazaar.tools.Md5Util;
@@ -75,19 +76,20 @@ public class UserController {
                                      @RequestParam String password,
                                      @RequestParam String phone,
                                      @RequestParam Byte role,
-                                     @RequestParam String email,
-                                     @RequestParam String city,
-                                     @RequestParam Byte gender,
-                                     @RequestParam String bankAccount,
+                                     @RequestParam(required = false) String email,
+                                     @RequestParam(required = false) String city,
+                                     @RequestParam(required = false) Byte gender,
+                                     @RequestParam(required = false) String bankAccount,
                                      @RequestParam(name = "license", required = false) MultipartFile license,
                                      @RequestParam(name = "idCard", required = false) MultipartFile idCard){
 
-        User user = new User();
 
         // 首先检查手机号是否已注册
         if (userService.getUserByPhone(phone) != null){
             return Response.fail("手机号已注册");
         }
+
+        User user = new User();
 
         // 正常注册
         username = username.trim();
@@ -101,8 +103,13 @@ public class UserController {
 
         user.setRole(role);
 
-        // 默认刚注册用户状态为 0-待审核
-        user.setStatus((byte) 0);
+        // 默认商户需要审核
+        if (role == 1){
+            user.setStatus((byte) 0);
+        }else {
+            user.setStatus((byte) 1);
+        }
+
 
         // 密码加密存储
         password = Md5Util.getMD5String(password);
@@ -121,15 +128,19 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public Response<Object> login(@RequestParam String username, @RequestParam String password){
-        username = username.trim();
+    public Response<Object> login(@RequestBody String loginData){
 
-        User user = userService.getUserByUsername(username);
+        JSONObject jsonObject = JSONObject.parseObject(loginData);
+        String phone = jsonObject.getString("phone");
+        String password = jsonObject.getString("password");
 
-        if(user == null){
-            return Response.fail("用户不存在");
-        } else if (!user.getPassword().equals(Md5Util.getMD5String(password))){
-            return Response.fail("密码错误");
+        log.debug("phone: " + jsonObject.getString("phone"));
+        log.debug("password: " + jsonObject.getString("password"));
+
+        User user = userService.getUserByPhone(phone);
+
+        if(user == null || !user.getPassword().equals(Md5Util.getMD5String(password))){
+            return Response.fail("用户名或密码错误");
         }
 
         // 检查用户状态,需要管理员审核能否通过注册

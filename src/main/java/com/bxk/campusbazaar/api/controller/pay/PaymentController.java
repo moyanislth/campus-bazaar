@@ -70,6 +70,7 @@ public class PaymentController {
         // 判断余额
         if (paymentRequest.getPaymentMethod() == PaymentMethod.wallet) {
             // TODO
+            int currentUserId = 1;
             walletService.deduct(currentUserId, actualAmount);
         }
 

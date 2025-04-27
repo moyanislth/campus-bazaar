@@ -14,6 +14,9 @@ spring:
           max-file-size: 20MB
           max-request-size: 20MB
           location: D:\Photos\CB
+    mvc:
+        # 静态资源地址
+        static-path-pattern: /static/**
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:3306/2022011117?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai

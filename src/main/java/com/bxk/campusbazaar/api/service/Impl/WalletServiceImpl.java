@@ -35,4 +35,17 @@ public class WalletServiceImpl implements WalletService {
             throw new RuntimeException("创建钱包失败");
         }
     }
+
+    @Override
+    public void deduct(int id, BigDecimal amount) {
+        Wallet wallet = walletMapper.selectByPrimaryKey((long) id);
+        BigDecimal balance = wallet.getBalance();
+        if (balance.compareTo(amount) < 0) { //余额不足
+            throw new RuntimeException("余额不足");
+        }
+        balance = balance.subtract(amount);
+        wallet.setBalance(balance);
+
+        walletMapper.updateByPrimaryKey(wallet);
+    }
 }

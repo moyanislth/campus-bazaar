@@ -6,13 +6,13 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
         <result column="bio" jdbcType="VARCHAR" property="bio" />
         <result column="wechat" jdbcType="VARCHAR" property="wechat" />
-        <result column="delivery_address" jdbcType="VARCHAR" typeHandler="com.bxk.campusbazaar.handler.JsonTypeHandler" property="deliveryAddress" />
+        <result column="delivery_address" jdbcType="VARCHAR" property="deliveryAddress" />
     </resultMap>
 
     <insert id="insert" parameterType="com.bxk.campusbazaar.pojo.UserProfile" useGeneratedKeys="true" keyProperty="userId">
         insert into user_profile (user_id, avatar, bio, wechat, delivery_address)
         values (#{userId,jdbcType=BIGINT}, #{avatar,jdbcType=VARCHAR}, #{bio,jdbcType=VARCHAR},
-                #{wechat,jdbcType=VARCHAR}, #{deliveryAddress,typeHandler=com.bxk.campusbazaar.handler.JsonTypeHandler,jdbcType=VARCHAR})
+                #{wechat,jdbcType=VARCHAR}, #{deliveryAddress,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateProfile">
@@ -28,7 +28,7 @@
                 wechat = #{wechat,jdbcType=VARCHAR},
             </if>
             <if test="deliveryAddress != null">
-                delivery_address = #{deliveryAddress,typeHandler=com.bxk.campusbazaar.handler.JsonTypeHandler,jdbcType=VARCHAR},
+                delivery_address = #{deliveryAddress,jdbcType=VARCHAR},
             </if>
         </set>
         WHERE user_id = #{userId,jdbcType=BIGINT}

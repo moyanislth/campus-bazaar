@@ -18,6 +18,6 @@ public class UserProfile {
     private String avatar;
     private String bio;
     private String wechat;
-    private List<String> deliveryAddress;
+    private String deliveryAddress;
 
 }
