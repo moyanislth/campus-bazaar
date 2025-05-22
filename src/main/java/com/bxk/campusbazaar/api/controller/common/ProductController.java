@@ -52,6 +52,7 @@ public class ProductController {
      */
     @GetMapping("/getProductById")
     public Response<Object> getProductById(@RequestParam("id") int id){
+//        76RT76T7
         Product product = productService.getProductById(id);
         return Response.success(product);
     }
