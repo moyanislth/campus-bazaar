@@ -10,8 +10,9 @@ public interface UserService {
 
     User getUserByUsername(String username);
 
-    List<User> getAllUser();
+    List<User> getUserByLikeName(String keyword);
 
+    List<User> getAllUser();
     void register(User user, int role, MultipartFile license, MultipartFile idCard);
 
     void deleteAll();
@@ -23,4 +24,6 @@ public interface UserService {
     User getUserByPhone(String phone);
 
     void updatePassword(long id, String md5String);
+
+    List<User> searchUsers(String keyword, Byte status);
 }

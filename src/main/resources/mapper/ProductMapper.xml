@@ -62,11 +62,20 @@
   </select>
 
   <select id="selectByLikeName" resultMap="BaseResultMap">
-    SELECT * FROM product
-    WHERE status = 1
-    <if test = 'name != null' >
-        AND name LIKE CONCAT('%', #{name}, '%')
-    </if>
-    ORDER BY ${standard} ${ascending ? 'ASC' : 'DESC'}
+    SELECT *
+    FROM product
+    WHERE name LIKE CONCAT('%', #{name}, '%')
+    ORDER BY id
+  </select>
+  <select id="selectByStatus" resultType="com.bxk.campusbazaar.pojo.Product">
+    SELECT *
+    FROM product
+    WHERE status = #{status}
+    ORDER BY id
+  </select>
+  <select id="selectProductImgs" resultType="java.lang.String">
+    SELECT image_url
+    FROM product_image
+    WHERE product_id = #{productId}
   </select>
 </mapper>

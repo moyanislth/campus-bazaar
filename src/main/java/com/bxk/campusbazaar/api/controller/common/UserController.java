@@ -3,6 +3,7 @@ package com.bxk.campusbazaar.api.controller.common;
 import com.alibaba.fastjson.JSONObject;
 import com.bxk.campusbazaar.api.service.UserService;
 import com.bxk.campusbazaar.pojo.User;
+import com.bxk.campusbazaar.pojo.SearchDTO;
 import com.bxk.campusbazaar.tools.Md5Util;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
@@ -30,14 +31,7 @@ public class UserController {
     }
 
 //调试代码-------------------------------------------------------------------------------
-    /**
-     * @调试方法
-     * 获取所有用户信息
-     */
-    @GetMapping("/getAllUser")
-    public List<User> getAll(){
-        return userService.getAllUser();
-    }
+
     /**
      * @调试方法
      * 删除所有用户及其关联表信息
@@ -53,10 +47,6 @@ public class UserController {
         return Response.success();
     }
 
-    @GetMapping("/getUserById")
-    public User getUserById(@RequestParam int id){
-        return userService.getUserById(id);
-    }
 
 //业务代码---------------------------------------------------------------------------
 
@@ -127,6 +117,9 @@ public class UserController {
         return Response.success();
     }
 
+    /**
+     * 用户登录
+     */
     @PostMapping(value = "/login")
     public Response<Object> login(@RequestBody String loginData){
 
@@ -178,12 +171,102 @@ public class UserController {
         return Response.fail("权限不足");
     }
 
+    /**
+     * 修改用户密码
+     * @param id 用户id
+     * @param password 新密码
+     * @return Response<Object>
+     */
     @PatchMapping(value = "/updatePassword")
     public Response<Object> updatePassword(@RequestParam int id, @RequestParam String password){
         try {
             userService.updatePassword(id, Md5Util.getMD5String(password));
         }catch (Exception e){
             return Response.fail(e.getMessage());
+        }
+
+        return Response.success();
+    }
+
+    /**
+     * 获取所有用户信息
+     * @return List<User>
+     */
+    @GetMapping("/getAllUser")
+    public Response<Object> getAll(){
+        // 获取所有用户信息
+        List<User> userList = userService.getAllUser();
+
+        return Response.success(userList);
+    }
+
+    /**
+     * 根据搜索内容获取所有相关用户信息
+     * @param  dto 搜索内容
+     */
+    @PostMapping("/searchUsers")
+    public Response<Object> searchUsers(@RequestBody SearchDTO dto){
+
+        String keyword = null;
+        Byte status = null;
+
+        if (dto.keyword!=null){
+            keyword = dto.keyword.trim();
+        }
+
+        if (dto.status!=null){
+            status = dto.status;
+        }
+
+        List<User> userList =  userService.searchUsers(keyword, status);
+
+        return Response.success(userList);
+    }
+
+    /**
+     * 根据id获取用户信息
+     * @param id 用户id
+     * @return Response<Object>
+     */
+    @GetMapping("/getUserById")
+    public Response<Object> getUserById(@RequestParam int id){
+        // 获取用户信息
+        User user = userService.getUserById(id);
+        return Response.success(user);
+    }
+
+
+    /**
+     * 获取所有需要审核的注册用户信息
+     * @return Response<Object>
+     */
+    @GetMapping(value = "/getAllNeedCheckUser")
+    public Response<Object> getAllNeedCheckUser(){
+        List<User> userList = userService.getAllUser();
+        // 过滤出需要审核的用户
+        List<User> needCheckUserList = userList.stream()
+                .filter(user -> user.getStatus() == 0)
+                .toList();
+
+        return Response.success(needCheckUserList);
+    }
+
+    /**
+     * 修改用户注册状态
+     * @param idData 用户id
+     * @return Response<Object>
+     */
+    @PatchMapping(value = "/updateUserStatus")
+    public Response<Object> updateUserStatus(@RequestBody String idData){
+        int id = JSONObject.parseObject(idData).getInteger("userId");
+        byte status = JSONObject.parseObject(idData).getByte("status");
+
+        User user = userService.getUserById(id);
+
+        if (user!=null){
+            userService.updateStatus(id, status);
+        }else {
+            return Response.fail("用户不存在");
         }
 
         return Response.success();

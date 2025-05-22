@@ -1,8 +1,0 @@
-<select id="selectByLikeName" resultMap="BaseResultMap">
-    SELECT * FROM product
-    WHERE status = 1
-    <if test = 'name != null' >
-        AND name LIKE #{name}
-    </if>
-    ORDER BY ${standard} ${ascending ? 'ASC' : 'DESC'}
-  </select>

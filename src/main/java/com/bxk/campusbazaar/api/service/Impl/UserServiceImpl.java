@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getUserByLikeName(String keyword) {
+        return userMapper.selectByLikeName(keyword);
+    }
+
+    @Override
     public List<User> getAllUser() {
 
         return userMapper.selectAll();
@@ -53,7 +58,6 @@ public class UserServiceImpl implements UserService {
         // 1. 插入用户（此时事务未提交，但 user.id 已被回填）
         userMapper.insert(user); // 依赖 useGeneratedKeys 配置
 
-        log.info(user.toString());
         // 2. 验证 ID 是否回填
         if (user.getId() == null) {
             throw new IllegalStateException("用户ID获取失败，请检查Mapper配置");
@@ -119,7 +123,7 @@ public class UserServiceImpl implements UserService {
     public void updateStatus(int selectedId, Byte status) {
         User user = userMapper.selectByPrimaryKey((long) selectedId);
         user.setStatus(status);
-        userMapper.updateByPrimaryKey(user);
+        userMapper.updateUser(user);
     }
 
     @Override
@@ -131,5 +135,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(long id, String md5String) {
         userMapper.updatePassword(id, md5String);
+    }
+
+    @Override
+    public List<User> searchUsers(String name, Byte status) {
+        List<User> users;
+
+        if (name != null) {
+            users = userMapper.selectByLikeName(name);
+
+            if (status != null) {
+                users.removeIf(user -> !user.getStatus().equals(status));
+            }
+
+        } else if (status != null) {
+            users = userMapper.selectByStatus(status);
+        } else {
+            users = userMapper.selectAll();
+        }
+
+        return users;
     }
 }

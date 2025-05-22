@@ -11,9 +11,11 @@ public interface ProductService {
 
     Product getProductById(int id);
 
+    List<String> getProductImgs(int id);
+
     void updateProductNob(int id);
 
-    List<Product> getProductByLike(String name, String standard, boolean ascending);
+    List<Product> getProductByLike(String name, Byte status);
 
     void updateProductStatus(int id, int status);
     void updateProductStatus();

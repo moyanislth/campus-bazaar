@@ -21,6 +21,7 @@ public class Product {
     private Integer stock;
 
     private Long merchantId;
+    private String merchantName;
 
     private Byte status;
 

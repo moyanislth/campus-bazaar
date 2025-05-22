@@ -11,6 +11,10 @@ public interface ProductMapper {
 
     Product selectByPrimaryKey(Long id);
 
+    List<Product> selectByStatus(Byte status);
+
+    List<String> selectProductImgs(int id);
+
     List<Product> selectAll();
 
     void updateNobByPrimaryKey(Long id , int nob);
@@ -21,5 +25,5 @@ public interface ProductMapper {
 
     Object test(String name);
 
-    List<Product> selectByLikeName(String name, String standard, boolean ascending);
+    List<Product> selectByLikeName(String name);
 }

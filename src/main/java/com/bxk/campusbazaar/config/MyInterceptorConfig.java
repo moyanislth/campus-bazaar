@@ -29,6 +29,7 @@ public class MyInterceptorConfig extends WebMvcConfigurationSupport {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 映射静态资源路径,file:表示本地文件系统
         registry.addResourceHandler("/img/**").addResourceLocations("file:" + UPLOAD_FOLDER);
     }
 }

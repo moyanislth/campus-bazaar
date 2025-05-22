@@ -13,10 +13,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        registry.addMapping("/api/**") // 允许跨域的路径
                 .allowedOrigins("http://localhost:5173") // 前端开发服务器地址
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true) // 允许携带凭证
-                .maxAge(3600);          // 预检请求的有效期，单位为秒
+                .maxAge(3600); // 预检请求的有效期，单位为秒
     }
 }

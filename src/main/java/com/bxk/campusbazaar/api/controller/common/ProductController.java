@@ -1,13 +1,20 @@
 package com.bxk.campusbazaar.api.controller.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bxk.campusbazaar.pojo.Product;
 import com.bxk.campusbazaar.api.service.ProductService;
+import com.bxk.campusbazaar.pojo.SearchDTO;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,18 +57,63 @@ public class ProductController {
     }
 
     /**
-     * 根据商品名模糊查询
-     * @param name 商品名
-     * @param standard 排序标准(商品名称name, 商品价格price, 商品购买人数nob)
-     * @param ascending 是否升序
+     * 后台查询商品
+     * @param searchData 搜索关键字和状态
      * @return 商品列表
      */
-    @GetMapping("/getProductByLike")
-    public List<Product> searchProducts(
-            @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = "name") String standard,
-            @RequestParam(defaultValue = "true") boolean ascending) {
-        return productService.getProductByLike(name, standard, ascending);
+    @PostMapping("/searchProducts")
+    public List<Product> searchProducts(@RequestBody SearchDTO searchData){
+        List<Product> products;
+
+        String name = null;
+        Byte status = null;
+
+        if (searchData.keyword!=null){
+            name = searchData.keyword.trim();
+        }
+
+        if (searchData.status!=null){
+            status = searchData.status;
+        }
+
+        products = productService.getProductByLike(name, status);
+
+        return products;
+    }
+
+
+    /**
+     * 获取商品图片
+     * @param id
+     * @return 商品图片二进制的数组
+     */
+    @GetMapping("/getProductImages")
+    public Response<Object> getProductImages(@RequestParam int id){
+        ArrayList<byte[]> images = new ArrayList<>();
+
+        List<String> imgs = productService.getProductImgs(id);
+
+        for (String img : imgs) {
+            Path imgPath = Path.of(img);
+
+            if (!imgPath.toFile().exists()) {
+                return Response.fail("图片文件未找到");
+            }
+
+            // 读取图片转换成byte[]
+            byte[] imageBytes;
+
+            try {
+                imageBytes = Files.readAllBytes(imgPath);
+                images.add(imageBytes);
+            } catch (IOException e) {
+                log.error("读取许可证文件失败", e);
+                return Response.fail("读取许可证文件失败");
+            }
+
+        }
+
+        return Response.success(images);
     }
 
     /**

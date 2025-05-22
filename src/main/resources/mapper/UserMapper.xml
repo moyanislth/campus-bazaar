@@ -19,7 +19,7 @@
     CALL truncate_user_table();
   </delete>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, username, password, role, status, phone, email, city, gender, bank_account,
+    select id, username, role, status, phone, email, city, gender, bank_account,
            created_at
     from user
   </select>
@@ -35,7 +35,7 @@
       #{email,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT},
       #{bankAccount,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.bxk.campusbazaar.pojo.User">
+  <update id="updateUser" parameterType="com.bxk.campusbazaar.pojo.User">
     update user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -74,5 +74,17 @@
     select id, username, password, role, status, phone, email, city, gender, bank_account, user.created_at
     from user
     where phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByLikeName" resultType="com.bxk.campusbazaar.pojo.User">
+    SELECT id, username, role, status, phone, email, city, gender, bank_account, created_at
+    FROM user
+    WHERE username LIKE CONCAT('%', #{name}, '%')
+    ORDER BY id
+  </select>
+  <select id="selectByStatus" resultType="com.bxk.campusbazaar.pojo.User">
+    SELECT id, username, role, status, phone, email, city, gender, bank_account, created_at
+    FROM user
+    WHERE status = #{status}
+    ORDER BY id
   </select>
 </mapper>

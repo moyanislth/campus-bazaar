@@ -11,9 +11,13 @@ public interface UserMapper {
 
     User selectByPrimaryKey(Long id);
 
+    List<User> selectByStatus(Byte status);
+
+    List<User> selectByLikeName(String name);
+
     List<User> selectAll();
 
-    int updateByPrimaryKey(User record);
+    int updateUser(User record);
 
     void deleteAll();
 
