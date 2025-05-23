@@ -3,6 +3,12 @@ server:
 
 prop:
     upload-folder: D:/Photos/CB
+    jwt:
+        secret: h238g2d823 # JWT密钥
+        expire: 604800000 # JWT过期时间ms，一周
+        header: Authorization # JWT存放在请求头中
+        token-prefix: Bearer # JWT前缀
+
 
 spring:
     application:

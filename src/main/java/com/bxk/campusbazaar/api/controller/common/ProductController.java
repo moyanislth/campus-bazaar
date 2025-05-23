@@ -32,11 +32,19 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/test")
-    public Response<Object> getDatabase(@RequestParam String name){
-        String result = (String) productService.test(name);
-        System.out.println(result);
-        return Response.success(result);
+
+    /**
+     * 测试方法：上架所有商品
+     * @return Response<Object>
+     */
+    @PatchMapping("updateAllProductStatus")
+    public Response<Object> updateProductStatus(){
+        try {
+            productService.updateProductStatus();
+        }catch (Exception e){
+            return Response.fail();
+        }
+        return Response.success();
     }
 
     @GetMapping("/getAllProducts")
@@ -129,6 +137,12 @@ public class ProductController {
         return Response.success();
     }
 
+    /**
+     * 更新商品状态
+     * @param id 商品id
+     * @param status 商品状态
+     * @return Response<Object>
+     */
     @PatchMapping("updateProductStatus")
     public Response<Object> updateProductStatus(@RequestParam int id, @RequestParam int status){
         if (!Arrays.asList(0,1,2).contains(status)){
@@ -141,15 +155,7 @@ public class ProductController {
         }
         return Response.success();
     }
-    @PatchMapping("updateAllProductStatus")
-    public Response<Object> updateProductStatus(){
-        try {
-            productService.updateProductStatus();
-        }catch (Exception e){
-            return Response.fail();
-        }
-        return Response.success();
-    }
+
 
     /**
      * 添加商品
