@@ -32,7 +32,7 @@
         </Logger>
 
         <!-- 自定义包日志 -->
-        <Logger name="com.bxk.campusbazaar" level="DEBUG" additivity="false">
+        <Logger name="com.bxk.campusbazaar" level="INFO" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
 
