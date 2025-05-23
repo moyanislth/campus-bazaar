@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bxk.campusbazaar.api.service.UserService;
 import com.bxk.campusbazaar.pojo.User;
 import com.bxk.campusbazaar.pojo.SearchDTO;
+import com.bxk.campusbazaar.tools.JwtUtil;
 import com.bxk.campusbazaar.tools.Md5Util;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +21,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private final UserService userService;
     private final WalletController walletController;
@@ -141,7 +145,17 @@ public class UserController {
             return Response.fail("用户待审核");
         }
 
-        return Response.success();
+        // 生成token, 存放到浏览器
+        String token = jwtUtil.createToken(user);
+
+
+        // 返回token和用户信息
+        JSONObject json = new JSONObject();
+        json.put("userId", user.getId());
+        json.put("role", user.getRole());
+        json.put("token", token);
+
+        return Response.success(json);
     }
 
     /**
