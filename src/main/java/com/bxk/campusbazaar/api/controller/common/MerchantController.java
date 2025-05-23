@@ -2,8 +2,7 @@ package com.bxk.campusbazaar.api.controller.common;
 
 
 import com.bxk.campusbazaar.api.service.MerchantService;
-import com.bxk.campusbazaar.pojo.MerchantCredentialsDTO;
-import com.bxk.campusbazaar.tools.Base64Util;
+import com.bxk.campusbazaar.pojo.DTO.MerchantCredentialsDTO;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;

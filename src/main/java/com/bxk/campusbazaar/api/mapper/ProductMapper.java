@@ -1,6 +1,7 @@
 package com.bxk.campusbazaar.api.mapper;
 
 import com.bxk.campusbazaar.pojo.Product;
+import com.bxk.campusbazaar.pojo.ProductImage;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface ProductMapper {
 
     List<Product> selectByStatus(Byte status);
 
-    List<String> selectProductImgs(int id);
+    List<ProductImage> selectProductImgs(long id);
 
     List<Product> selectAll();
 

@@ -73,8 +73,8 @@
     WHERE status = #{status}
     ORDER BY id
   </select>
-  <select id="selectProductImgs" resultType="java.lang.String">
-    SELECT image_url
+  <select id="selectProductImgs" resultType="ProductImage">
+    SELECT *
     FROM product_image
     WHERE product_id = #{productId}
   </select>
