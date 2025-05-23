@@ -11,6 +11,7 @@ public class ProductImage {
     private Long productId;
 
     private String imageUrl;
+    private byte[] imageData;
 
     private Boolean isMain;
 

@@ -1,15 +1,11 @@
 package com.bxk.campusbazaar.api.service.Impl;
 
-import com.bxk.campusbazaar.api.controller.common.UserController;
 import com.bxk.campusbazaar.api.mapper.MerchantMapper;
-import com.bxk.campusbazaar.api.mapper.OrderMapper;
 import com.bxk.campusbazaar.api.service.MerchantService;
 import com.bxk.campusbazaar.api.service.UserService;
 import com.bxk.campusbazaar.pojo.Merchant;
-import com.bxk.campusbazaar.pojo.MerchantCredentialsDTO;
-import com.bxk.campusbazaar.pojo.Order;
+import com.bxk.campusbazaar.pojo.DTO.MerchantCredentialsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -17,7 +17,7 @@ public interface UserService {
 
     void deleteAll();
 
-    User getUserById(int id);
+    User getUserById(long id);
 
     void updateStatus(int selectedId, Byte status);
 
