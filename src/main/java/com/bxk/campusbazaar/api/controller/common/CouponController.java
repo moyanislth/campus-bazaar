@@ -36,6 +36,13 @@ class CouponController {
     }
 
     /**
+     * 获取用户所有
+     * @param id 用户id
+     * @return 优惠券列表
+     */
+    // TODO: 需要实现用户优惠券列表
+
+    /**
      * 添加优惠券
      * @param name           优惠券名称
      * @param type           类型：0-满减，1-折扣
