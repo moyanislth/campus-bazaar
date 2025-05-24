@@ -5,7 +5,7 @@ import com.bxk.campusbazaar.pojo.ProductImage;
 
 import java.util.List;
 
-public class ProductDto {
+public class ProductDTO {
     public Product product;
     public List<ProductImage> productImages;
 }

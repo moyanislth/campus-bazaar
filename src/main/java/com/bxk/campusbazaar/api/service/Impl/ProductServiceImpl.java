@@ -1,9 +1,11 @@
 package com.bxk.campusbazaar.api.service.Impl;
 
+import com.bxk.campusbazaar.api.mapper.ProductCommentMapper;
 import com.bxk.campusbazaar.api.mapper.UserMapper;
 import com.bxk.campusbazaar.api.service.ProductService;
 import com.bxk.campusbazaar.api.mapper.ProductMapper;
 import com.bxk.campusbazaar.pojo.Product;
+import com.bxk.campusbazaar.pojo.ProductComment;
 import com.bxk.campusbazaar.pojo.ProductImage;
 import com.bxk.campusbazaar.pojo.User;
 import lombok.extern.log4j.Log4j2;
@@ -17,12 +19,14 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
+    private final ProductCommentMapper productCommentMapper;
     private final UserMapper userMapper;
 
     @Autowired
-    ProductServiceImpl(ProductMapper productMapper, UserMapper userMapper) {
+    ProductServiceImpl(ProductMapper productMapper, UserMapper userMapper,ProductCommentMapper productCommentMapper) {
         this.productMapper = productMapper;
         this.userMapper = userMapper;
+        this.productCommentMapper = productCommentMapper;
     }
 
     @Override
@@ -53,6 +57,16 @@ public class ProductServiceImpl implements ProductService {
         Product pr = productMapper.selectByPrimaryKey((long) id);
         int nob = pr.getNob() + 1;
         productMapper.updateNobByPrimaryKey((long)id,nob);
+    }
+
+    @Override
+    public void addComment(ProductComment productComment) {
+        productCommentMapper.insert(productComment);
+    }
+
+    @Override
+    public List<ProductComment> getCommentsByProductId(Long id) {
+        return productCommentMapper.selectByProductId(id);
     }
 
     @Override

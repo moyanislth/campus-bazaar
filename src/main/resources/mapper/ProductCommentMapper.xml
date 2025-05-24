@@ -39,4 +39,9 @@
     select id, product_id, user_id, star_rating, created_at, content
     from product_comment
   </select>
+    <select id="selectByProductId" resultType="com.bxk.campusbazaar.pojo.ProductComment">
+    select id, product_id, user_id, star_rating, created_at, content
+    from product_comment
+    where product_id = #{productId,jdbcType=BIGINT}
+    </select>
 </mapper>

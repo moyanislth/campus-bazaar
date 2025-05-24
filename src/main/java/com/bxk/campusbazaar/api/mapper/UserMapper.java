@@ -10,7 +10,7 @@ public interface UserMapper {
     int insert(User record);
 
     User selectByPrimaryKey(Long id);
-
+    String selectUsernameByPrimaryKey(Long id);
     List<User> selectByStatus(Byte status);
 
     List<User> selectByLikeName(String name);
