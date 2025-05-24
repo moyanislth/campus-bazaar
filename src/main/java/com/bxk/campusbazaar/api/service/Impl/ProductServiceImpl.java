@@ -3,8 +3,8 @@ package com.bxk.campusbazaar.api.service.Impl;
 import com.bxk.campusbazaar.api.mapper.UserMapper;
 import com.bxk.campusbazaar.api.service.ProductService;
 import com.bxk.campusbazaar.api.mapper.ProductMapper;
-import com.bxk.campusbazaar.api.service.UserService;
 import com.bxk.campusbazaar.pojo.Product;
+import com.bxk.campusbazaar.pojo.ProductImage;
 import com.bxk.campusbazaar.pojo.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +44,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<String> getProductImgs(int id) {
-        List<String> imgs = productMapper.selectProductImgs(id);
-        return imgs;
+    public List<ProductImage> getProductImgs(Long id) {
+        return productMapper.selectProductImgs(id);
     }
 
     @Override
@@ -83,8 +82,7 @@ public class ProductServiceImpl implements ProductService {
      * 补充商户信息
      */
     private void addUserName(List<Product> products){
-        for (int i = 0; i < products.size(); i++){
-            Product product = products.get(i);
+        for (Product product : products) {
             User user = userMapper.selectByPrimaryKey(product.getMerchantId());
 
             product.setMerchantName(user.getUsername());

@@ -1,6 +1,7 @@
 package com.bxk.campusbazaar.api.service;
 
 import com.bxk.campusbazaar.pojo.Product;
+import com.bxk.campusbazaar.pojo.ProductImage;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface ProductService {
 
     Product getProductById(int id);
 
-    List<String> getProductImgs(int id);
+    List<ProductImage> getProductImgs(Long id);
 
     void updateProductNob(int id);
 

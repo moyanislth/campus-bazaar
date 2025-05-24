@@ -3,7 +3,7 @@ package com.bxk.campusbazaar.api.controller.common;
 import com.alibaba.fastjson.JSONObject;
 import com.bxk.campusbazaar.api.service.UserService;
 import com.bxk.campusbazaar.pojo.User;
-import com.bxk.campusbazaar.pojo.SearchDTO;
+import com.bxk.campusbazaar.pojo.DTO.SearchDTO;
 import com.bxk.campusbazaar.tools.JwtUtil;
 import com.bxk.campusbazaar.tools.Md5Util;
 import com.bxk.campusbazaar.tools.Response;

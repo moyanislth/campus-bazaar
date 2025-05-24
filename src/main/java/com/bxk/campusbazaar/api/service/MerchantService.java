@@ -1,7 +1,7 @@
 package com.bxk.campusbazaar.api.service;
 
 import com.bxk.campusbazaar.pojo.Merchant;
-import com.bxk.campusbazaar.pojo.MerchantCredentialsDTO;
+import com.bxk.campusbazaar.pojo.DTO.MerchantCredentialsDTO;
 
 public interface MerchantService {
     Merchant getMerchant(int id) ;

@@ -1,22 +1,22 @@
 package com.bxk.campusbazaar.api.controller.common;
 
-import com.alibaba.fastjson.JSONObject;
+import com.bxk.campusbazaar.api.service.UserService;
+import com.bxk.campusbazaar.pojo.DTO.ProductDto;
 import com.bxk.campusbazaar.pojo.Product;
 import com.bxk.campusbazaar.api.service.ProductService;
-import com.bxk.campusbazaar.pojo.SearchDTO;
+import com.bxk.campusbazaar.pojo.DTO.SearchDTO;
+import com.bxk.campusbazaar.pojo.ProductImage;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Log4j2
 @Component
@@ -27,9 +27,12 @@ public class ProductController {
 
     private final ProductService productService;
 
+
+
     @Autowired
-    ProductController(ProductService productService){
+    ProductController(ProductService productService) {
         this.productService = productService;
+
     }
 
 
@@ -53,6 +56,118 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
 
         return Response.success(products);
+    }
+
+    /**
+     * 获取所有上架商品（带图片）
+     * @return Response<Object>
+     */
+    @GetMapping("/getAllProductsWithImg")
+    public Response<Object> getAllProductsWithImg() {
+
+        List<Product> products = productService.getProductByLike(null, (byte) 1);
+
+        if (products == null || products.isEmpty()) {
+            return Response.success(Collections.emptyList());
+        }
+
+        List<ProductDto> productDtos = productToListDtos(products);
+
+        return Response.success(productDtos);
+
+    }
+
+    /**
+     * 将商品列表转换为带图片的商品DTO列表
+     * @param products 商品列表
+     */
+    private List<ProductDto> productToListDtos(List<Product> products) {
+
+        List<ProductDto> productDtos = new ArrayList<>();
+
+        for (Product product : products) {
+            ProductDto productDto = new ProductDto(); // 每次循环创建新实例
+
+            List<ProductImage> productImages = productService.getProductImgs(product.getId());
+
+            try{
+                // 将图片转成byte[]
+                for (ProductImage img : productImages) {
+                    Path imgPath = Paths.get(img.getImageUrl());
+
+                    if (!Files.exists(imgPath)) {
+                        throw new IOException("图片文件未找到");
+                    }
+
+                    byte[] imageBytes;
+
+                    try {
+                        imageBytes = Files.readAllBytes(imgPath);
+                        img.setImageData(imageBytes);
+                    } catch (IOException e) {
+                        throw new IOException("读取图片文件失败:\n", e);
+                    }
+                }
+            } catch (IOException e) {
+                log.error(e);
+            }
+
+            productDto.product = product;
+            productDto.productImages = productImages;
+
+            productDtos.add(productDto);
+        }
+
+        return productDtos;
+    }
+
+    @GetMapping("/userSearch")
+    public Response<Object> userSearch(@RequestParam(value="keyword",required = false)String keyword,
+                                       @RequestParam(value = "sort", required = false) String sort){
+
+        if (keyword == null){
+            return getAllProductsWithImg();
+        }
+
+        List<Product> products = productService.getProductByLike(keyword, (byte) 1);
+
+        // 根据sort排序：['newest', 'sales', 'price_asc', 'price_desc']
+        switch (sort) {
+            case "newest":
+                products.sort((p1, p2) -> p2.getId().compareTo(p1.getId()));
+                break;
+            case "sales":
+                products.sort((p1, p2) -> p2.getNob() - p1.getNob());
+                break;
+            case "price_asc":
+                products.sort(Comparator.comparingDouble(p ->
+                        p.getDiscountPrice() == null ?
+                                p.getOriginalPrice().doubleValue() :
+                                p.getDiscountPrice().doubleValue()));
+                break;
+            case "price_desc":
+                products.sort((p1, p2) -> {
+                    double price1 = p1.getDiscountPrice() == null ?
+                            p1.getOriginalPrice().doubleValue() :
+                            p1.getDiscountPrice().doubleValue();
+                    double price2 = p2.getDiscountPrice() == null ?
+                            p2.getOriginalPrice().doubleValue() :
+                            p2.getDiscountPrice().doubleValue();
+                    return Double.compare(price2, price1);
+                });
+                break;
+            default:
+                break;
+        }
+
+        if (products == null || products.isEmpty()) {
+            return Response.success(Collections.emptyList());
+        }
+
+        List<ProductDto> productDtos = productToListDtos(products);
+
+
+        return Response.success(productDtos);
     }
 
     /**
@@ -93,17 +208,16 @@ public class ProductController {
 
     /**
      * 获取商品图片
-     * @param id
+     * @param id 商品id
      * @return 商品图片二进制的数组
      */
     @GetMapping("/getProductImages")
     public Response<Object> getProductImages(@RequestParam int id){
         ArrayList<byte[]> images = new ArrayList<>();
 
-        List<String> imgs = productService.getProductImgs(id);
-
-        for (String img : imgs) {
-            Path imgPath = Path.of(img);
+        List<ProductImage> productImages = productService.getProductImgs((long) id);
+        for (ProductImage img : productImages) {
+            Path imgPath = Path.of(img.getImageUrl());
 
             if (!imgPath.toFile().exists()) {
                 return Response.fail("图片文件未找到");
