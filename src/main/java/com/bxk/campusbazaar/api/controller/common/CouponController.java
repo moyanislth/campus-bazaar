@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @Log4j2
 @RequestMapping("/api/coupon")
+@CrossOrigin
 class CouponController {
 
     private final CouponService couponService;

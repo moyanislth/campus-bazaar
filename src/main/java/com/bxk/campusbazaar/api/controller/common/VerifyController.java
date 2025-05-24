@@ -6,10 +6,7 @@ import com.bxk.campusbazaar.tools.VerifyUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,6 +16,7 @@ import java.io.OutputStream;
 /**
  * 验证码验证控制器
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/verify")
 public class VerifyController {

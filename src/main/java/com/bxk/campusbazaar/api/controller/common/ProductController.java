@@ -22,6 +22,7 @@ import java.util.*;
 @Component
 @RestController
 @RequestMapping("/api/product")
+@CrossOrigin
 public class ProductController {
 
 
