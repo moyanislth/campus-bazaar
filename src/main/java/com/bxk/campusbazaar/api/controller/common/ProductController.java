@@ -86,87 +86,94 @@ public class ProductController {
         List<ProductDto> productDtos = new ArrayList<>();
 
         for (Product product : products) {
-            ProductDto productDto = new ProductDto(); // 每次循环创建新实例
-
-            List<ProductImage> productImages = productService.getProductImgs(product.getId());
-
-            try{
-                // 将图片转成byte[]
-                for (ProductImage img : productImages) {
-                    Path imgPath = Paths.get(img.getImageUrl());
-
-                    if (!Files.exists(imgPath)) {
-                        throw new IOException("图片文件未找到");
-                    }
-
-                    byte[] imageBytes;
-
-                    try {
-                        imageBytes = Files.readAllBytes(imgPath);
-                        img.setImageData(imageBytes);
-                    } catch (IOException e) {
-                        throw new IOException("读取图片文件失败:\n", e);
-                    }
-                }
-            } catch (IOException e) {
-                log.error(e);
-            }
-
-            productDto.product = product;
-            productDto.productImages = productImages;
-
-            productDtos.add(productDto);
+            productDtos.add(productToDtos(product));
         }
 
         return productDtos;
     }
 
+    /**
+     * 将商品转换为带图片的商品DTO
+     * @param product 商品列表
+     */
+    private ProductDto productToDtos(Product product) {
+
+        ProductDto productDto = new ProductDto();
+
+        List<ProductImage> productImages = productService.getProductImgs(product.getId());
+
+        try{
+            // 将图片转成byte[]
+            for (ProductImage img : productImages) {
+                Path imgPath = Paths.get(img.getImageUrl());
+
+                if (!Files.exists(imgPath)) {
+                    throw new IOException("图片文件未找到");
+                }
+
+                byte[] imageBytes;
+
+                try {
+                    imageBytes = Files.readAllBytes(imgPath);
+                    img.setImageData(imageBytes);
+                } catch (IOException e) {
+                    throw new IOException("读取图片文件失败:\n", e);
+                }
+            }
+        } catch (IOException e) {
+            log.error(e);
+        }
+
+        productDto.product = product;
+        productDto.productImages = productImages;
+
+
+
+        return productDto;
+    }
+
     @GetMapping("/userSearch")
-    public Response<Object> userSearch(@RequestParam(value="keyword",required = false)String keyword,
-                                       @RequestParam(value = "sort", required = false) String sort){
+    public Response<Object> userSearch(@RequestParam(value="keyword", required = false) String keyword,
+                                       @RequestParam(value = "sort", required = false) String sort) {
+        // 获取基础数据
+        List<Product> products = productService.getProductByLike(keyword, (byte)1);
 
-        if (keyword == null){
-            return getAllProductsWithImg();
-        }
-
-        List<Product> products = productService.getProductByLike(keyword, (byte) 1);
-
-        // 根据sort排序：['newest', 'sales', 'price_asc', 'price_desc']
-        switch (sort) {
-            case "newest":
-                products.sort((p1, p2) -> p2.getId().compareTo(p1.getId()));
-                break;
-            case "sales":
-                products.sort((p1, p2) -> p2.getNob() - p1.getNob());
-                break;
-            case "price_asc":
-                products.sort(Comparator.comparingDouble(p ->
-                        p.getDiscountPrice() == null ?
-                                p.getOriginalPrice().doubleValue() :
-                                p.getDiscountPrice().doubleValue()));
-                break;
-            case "price_desc":
-                products.sort((p1, p2) -> {
-                    double price1 = p1.getDiscountPrice() == null ?
-                            p1.getOriginalPrice().doubleValue() :
-                            p1.getDiscountPrice().doubleValue();
-                    double price2 = p2.getDiscountPrice() == null ?
-                            p2.getOriginalPrice().doubleValue() :
-                            p2.getDiscountPrice().doubleValue();
-                    return Double.compare(price2, price1);
-                });
-                break;
-            default:
-                break;
-        }
-
+        // 空检查
         if (products == null || products.isEmpty()) {
             return Response.success(Collections.emptyList());
         }
 
+        // 排序处理
+        if (sort != null) {
+            switch (sort) {
+                case "newest":
+                    products.sort(Comparator.comparing(Product::getId));
+                    break;
+                case "sales":
+                    products.sort((p1, p2) -> p2.getNob() - p1.getNob());
+                    break;
+                case "price_asc":
+                    products.sort(Comparator.comparingDouble(p ->
+                            p.getDiscountPrice() != null ?
+                                    p.getDiscountPrice().doubleValue() :
+                                    p.getOriginalPrice().doubleValue()));
+                    break;
+                case "price_desc":
+                    products.sort((p1, p2) -> {
+                        double price1 = p1.getDiscountPrice() != null ?
+                                p1.getDiscountPrice().doubleValue() :
+                                p1.getOriginalPrice().doubleValue();
+                        double price2 = p2.getDiscountPrice() != null ?
+                                p2.getDiscountPrice().doubleValue() :
+                                p2.getOriginalPrice().doubleValue();
+                        return Double.compare(price2, price1);
+                    });
+                    break;
+
+            }
+        }
+
         List<ProductDto> productDtos = productToListDtos(products);
-
-
         return Response.success(productDtos);
     }
 
@@ -175,9 +182,13 @@ public class ProductController {
      */
     @GetMapping("/getProductById")
     public Response<Object> getProductById(@RequestParam("id") int id){
-//        76RT76T7
+        ProductDto productDto;
+
         Product product = productService.getProductById(id);
-        return Response.success(product);
+        productDto = productToDtos(product);
+
+
+        return Response.success(productDto);
     }
 
     /**
