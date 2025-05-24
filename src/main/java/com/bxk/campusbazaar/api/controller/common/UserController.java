@@ -20,6 +20,7 @@ import java.util.List;
 @Component
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin
 public class UserController {
 
     @Autowired

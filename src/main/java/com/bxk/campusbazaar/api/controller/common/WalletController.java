@@ -4,11 +4,9 @@ package com.bxk.campusbazaar.api.controller.common;
 import com.bxk.campusbazaar.api.service.WalletService;
 import com.bxk.campusbazaar.tools.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 /**
  * 钱包业务
  */
