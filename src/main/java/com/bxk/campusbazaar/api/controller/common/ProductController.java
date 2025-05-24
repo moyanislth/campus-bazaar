@@ -1,10 +1,12 @@
 package com.bxk.campusbazaar.api.controller.common;
 
 import com.bxk.campusbazaar.api.service.UserService;
-import com.bxk.campusbazaar.pojo.DTO.ProductDto;
+import com.bxk.campusbazaar.pojo.DTO.ProductCommentDTO;
+import com.bxk.campusbazaar.pojo.DTO.ProductDTO;
 import com.bxk.campusbazaar.pojo.Product;
 import com.bxk.campusbazaar.api.service.ProductService;
 import com.bxk.campusbazaar.pojo.DTO.SearchDTO;
+import com.bxk.campusbazaar.pojo.ProductComment;
 import com.bxk.campusbazaar.pojo.ProductImage;
 import com.bxk.campusbazaar.tools.Response;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +18,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Log4j2
@@ -27,13 +32,13 @@ public class ProductController {
 
 
     private final ProductService productService;
-
+    private final UserService userService;
 
 
     @Autowired
-    ProductController(ProductService productService) {
+    ProductController(ProductService productService,UserService userService) {
         this.productService = productService;
-
+        this.userService = userService;
     }
 
 
@@ -72,7 +77,7 @@ public class ProductController {
             return Response.success(Collections.emptyList());
         }
 
-        List<ProductDto> productDtos = productToListDtos(products);
+        List<ProductDTO> productDtos = productToListDtos(products);
 
         return Response.success(productDtos);
 
@@ -82,9 +87,9 @@ public class ProductController {
      * 将商品列表转换为带图片的商品DTO列表
      * @param products 商品列表
      */
-    private List<ProductDto> productToListDtos(List<Product> products) {
+    private List<ProductDTO> productToListDtos(List<Product> products) {
 
-        List<ProductDto> productDtos = new ArrayList<>();
+        List<ProductDTO> productDtos = new ArrayList<>();
 
         for (Product product : products) {
             productDtos.add(productToDtos(product));
@@ -97,9 +102,9 @@ public class ProductController {
      * 将商品转换为带图片的商品DTO
      * @param product 商品列表
      */
-    private ProductDto productToDtos(Product product) {
+    private ProductDTO productToDtos(Product product) {
 
-        ProductDto productDto = new ProductDto();
+        ProductDTO productDto = new ProductDTO();
 
         List<ProductImage> productImages = productService.getProductImgs(product.getId());
 
@@ -174,7 +179,7 @@ public class ProductController {
             }
         }
 
-        List<ProductDto> productDtos = productToListDtos(products);
+        List<ProductDTO> productDtos = productToListDtos(products);
         return Response.success(productDtos);
     }
 
@@ -183,13 +188,92 @@ public class ProductController {
      */
     @GetMapping("/getProductById")
     public Response<Object> getProductById(@RequestParam("id") int id){
-        ProductDto productDto;
+        ProductDTO productDto;
 
         Product product = productService.getProductById(id);
         productDto = productToDtos(product);
 
 
         return Response.success(productDto);
+    }
+
+    /**
+     * 获取商品评论
+     */
+    @GetMapping("/getCommentsByProductId")
+    public Response<Object> getCommentsByProductId(@RequestParam("productId") int productId){
+
+        List<ProductCommentDTO> productComments = productCommentsToDtos(productService.getCommentsByProductId((long) productId));
+
+
+        return Response.success(productComments);
+    }
+
+    /**
+     * ProductComments 转换为 ProductCommentDtos
+     */
+    private List<ProductCommentDTO> productCommentsToDtos(List<ProductComment> productComments) {
+        List<ProductCommentDTO> productCommentDtos = new ArrayList<>();
+
+        for (ProductComment productComment : productComments) {
+            ProductCommentDTO dto = productCommentToDto(productComment);
+            productCommentDtos.add(dto);
+        }
+
+        return productCommentDtos;
+    }
+
+    /**
+     * ProductComment 转换为 ProductCommentDto
+     */
+    private ProductCommentDTO productCommentToDto(ProductComment productComment) {
+        ProductCommentDTO dto = new ProductCommentDTO();
+
+        dto.setId(productComment.getId());
+        dto.setProductId(productComment.getProductId());
+        dto.setUserId(productComment.getUserId());
+        dto.setStarRating(productComment.getStarRating());
+        dto.setCreatedAt(productComment.getCreatedAt());
+        dto.setContent(productComment.getContent());
+
+        dto.setUserName(userService.getUserNameById(productComment.getUserId()));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dto.setCreatedAtStr(sdf.format(productComment.getCreatedAt()));
+
+
+        return dto;
+    }
+
+    /**
+     * 添加商品评论
+     * @param productCommentDTO 商品评论
+     * @return Response<Object>
+     */
+    @PostMapping("/addComment")
+    public Response<Object> addComment(@RequestBody ProductCommentDTO productCommentDTO){
+
+        ProductComment productComment = new ProductComment();
+
+        productComment.setId(productCommentDTO.getId());
+        productComment.setProductId(productCommentDTO.getProductId());
+        productComment.setUserId(productCommentDTO.getUserId());
+        if (productCommentDTO.getStarRating() == null) {
+            productComment.setStarRating((byte) 3);
+        } else {
+            productComment.setStarRating(productCommentDTO.getStarRating());
+        }
+        productComment.setContent(productCommentDTO.getContent());
+        productComment.setCreatedAt(productCommentDTO.getCreatedAt());
+
+        try {
+            productService.addComment(productComment);
+        }
+        catch (Exception e){
+            return Response.fail(e.getCause().getMessage());
+        }
+
+        return Response.success();
     }
 
     /**

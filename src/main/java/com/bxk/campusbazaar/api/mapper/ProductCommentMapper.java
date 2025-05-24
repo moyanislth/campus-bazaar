@@ -11,6 +11,6 @@ public interface ProductCommentMapper {
     ProductComment selectByPrimaryKey(Long id);
 
     List<ProductComment> selectAll();
-
+    List<ProductComment> selectByProductId(Long id);
     int updateByPrimaryKey(ProductComment record);
 }

@@ -18,7 +18,7 @@ public interface UserService {
     void deleteAll();
 
     User getUserById(long id);
-
+    String getUserNameById(long id);
     void updateStatus(int selectedId, Byte status);
 
     User getUserByPhone(String phone);

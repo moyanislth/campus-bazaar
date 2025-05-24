@@ -38,8 +38,12 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 放行 OPTIONS 请求（如跨域预检请求）
         if ("OPTIONS".equals(request.getMethod())) {
+            response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+            response.setHeader("Access-Control-Allow-Headers", "*");
+            response.setHeader("Access-Control-Allow-Credentials", "true");
             response.setStatus(HttpServletResponse.SC_OK);
-            return true;
+            return false;
         }
 
         // 检查 token 是否存在

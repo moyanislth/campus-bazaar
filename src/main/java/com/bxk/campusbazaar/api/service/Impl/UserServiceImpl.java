@@ -120,6 +120,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String getUserNameById(long id) {
+        return userMapper.selectUsernameByPrimaryKey(id);
+    }
+
+    @Override
     public void updateStatus(int selectedId, Byte status) {
         User user = userMapper.selectByPrimaryKey((long) selectedId);
         user.setStatus(status);

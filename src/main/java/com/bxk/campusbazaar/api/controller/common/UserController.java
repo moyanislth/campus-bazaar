@@ -153,6 +153,7 @@ public class UserController {
         // 返回token和用户信息
         JSONObject json = new JSONObject();
         json.put("userId", user.getId());
+        json.put("username", user.getUsername());
         json.put("role", user.getRole());
         json.put("token", token);
 

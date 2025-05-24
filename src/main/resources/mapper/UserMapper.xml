@@ -87,4 +87,9 @@
     WHERE status = #{status}
     ORDER BY id
   </select>
+    <select id="selectUsernameByPrimaryKey" resultType="java.lang.String">
+    SELECT username
+    FROM user
+    WHERE id = #{id,jdbcType=BIGINT}
+    </select>
 </mapper>
